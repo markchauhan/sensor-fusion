@@ -1,6 +1,6 @@
 # Real-Time Sensor Fusion Pipeline
 
-Lock-free SPSC pipeline in C++17 processing simulated IMU sensor streams with sub-microsecond median latency.
+Lock-free SPSC pipeline in C++17 processing a simulated 200 Hz IMU stream, with sub-microsecond median handoff latency on a shared VM.
 
 ## Architecture
 
@@ -29,7 +29,13 @@ Codespace VM (shared), 5 seconds at 200Hz:
 | Latency p90 | 4.92 µs |
 | Latency p99 | 2,112 µs |
 
-Note: p99 spike reflects OS scheduler jitter on a shared VM, not pipeline overhead.
+What these numbers mean:
+
+- **Throughput is set by the generator, not the pipeline.** The producer sleeps until each 5 ms tick (`sleep_until`), so the benchmark always processes about 200 packets/sec. It does not measure the buffer's maximum rate.
+- **Latency** is the time from the producer's timestamp, taken just before it builds the packet, to the consumer finishing that packet's feature updates. It covers packet creation, the ring-buffer handoff and the EWMA and variance updates.
+- **The p99 spike** reflects OS scheduler jitter on a shared VM, not pipeline overhead. Neither thread is pinned to a core.
+- **Results vary by machine.** A later run on a 2-core Linux VM gave p50 of about 1 µs with throughput again pinned at 200 packets/sec.
+- **Variance** is the population variance (`M2 / n`).
 
 ## Build
 
@@ -39,6 +45,8 @@ cmake -B build && cmake --build build
 ```
 
 ## Roadmap
+
+- **Next:** a saturation benchmark (producer pushes with no sleep) to measure the buffer's maximum throughput, with both threads pinned to separate cores
 
 - **Level 2:** GPS stream, thread pool, complementary filter fusion
 - **Level 3:** Real EuRoC MAV dataset, Extended Kalman Filter, published write-up
