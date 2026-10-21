@@ -15,3 +15,8 @@ add_library(sf INTERFACE)
 target_include_directories(sf INTERFACE include)
 target_compile_options(sf INTERFACE -Wall -Wextra -Wpedantic)
 target_link_libraries(sf INTERFACE Threads::Threads)
+
+enable_testing() 
+add_executable(test_imu_sample tests/test_imu_sample.cpp)
+target_link_libraries(test_imu_sample PRIVATE sf)
+add_test(NAME test_imu_sample COMMAND test_imu_sample)
