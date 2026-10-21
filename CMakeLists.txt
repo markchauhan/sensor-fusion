@@ -24,3 +24,7 @@ add_test(NAME test_imu_sample COMMAND test_imu_sample)
 add_executable(test_spsc_ring tests/test_spsc_ring.cpp)
 target_link_libraries(test_spsc_ring PRIVATE sf)
 add_test(NAME spsc_ring COMMAND test_spsc_ring)
+
+add_executable(test_latency_histogram tests/test_latency_histogram.cpp)
+target_link_libraries(test_latency_histogram PRIVATE sf)
+add_test(NAME latency_histogram COMMAND test_latency_histogram)
