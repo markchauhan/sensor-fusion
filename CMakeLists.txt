@@ -1,16 +1,17 @@
-cmake_minimum_required(VERSION 3.14)
-project(sensor_fusion)
+cmake_minimum_required(VERSION 3.16)
+project(sensor_fusion LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-# optimizations on, debug symbols for profiling
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O2 -g")
+if(NOT CMAKE_BUILD_TYPE)
+  set(CMAKE_BUILD_TYPE RelWithDebInfo)
+endif()
 
-add_executable(benchmark src/benchmark.cpp)
-
-target_include_directories(benchmark PRIVATE src)
-
-# link pthreads — required for std::thread on Linux
 find_package(Threads REQUIRED)
-target_link_libraries(benchmark PRIVATE Threads::Threads)
+
+add_library(sf INTERFACE)
+target_include_directories(sf INTERFACE include)
+target_compile_options(sf INTERFACE -Wall -Wextra -Wpedantic)
+target_link_libraries(sf INTERFACE Threads::Threads)
