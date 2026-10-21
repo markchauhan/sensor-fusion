@@ -1,4 +1,5 @@
 build/
 *.o
 *.a
-data/ 
+data/
+build-tsan/

@@ -20,3 +20,7 @@ enable_testing()
 add_executable(test_imu_sample tests/test_imu_sample.cpp)
 target_link_libraries(test_imu_sample PRIVATE sf)
 add_test(NAME test_imu_sample COMMAND test_imu_sample)
+
+add_executable(test_spsc_ring tests/test_spsc_ring.cpp)
+target_link_libraries(test_spsc_ring PRIVATE sf)
+add_test(NAME spsc_ring COMMAND test_spsc_ring)
