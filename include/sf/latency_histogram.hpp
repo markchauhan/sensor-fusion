@@ -5,7 +5,7 @@
 
 namespace sf {
 
-// Log-linear histogram for latency measurements. The histogram is designed to be used in a single-threaded context, where one thread is responsible for recording latency measurements and another thread may read the histogram data. The histogram uses a fixed-size array to store counts of latency measurements in logarithmically spaced bins.
+// Log-linear histogram for latency measurements. Not thread-safe: use one histogram per thread and merge() them to combine. The histogram uses a fixed-size array to store counts of latency measurements in logarithmically spaced bins.
 class LatencyHistogram {
 public: 
     static constexpr int kSubBits = 4; // 16 sub-bins
@@ -56,7 +56,7 @@ public:
 
     void reset() { *this = LatencyHistogram{}; }
 
-    // Returns the upper bound of the latency values that fall into the bin at index i. The upper bound is calculated based on the logarithmic scale of the histogram
+    // Maps a value to its bin index. Values below 32 get exact bins; larger values are bucketed by their highest set bit plus the next 4 bits.
     static std::size_t index_of(uint64_t v) {
         if (v < 2 * kSub) return static_cast<std::size_t>(v);
         const int msb = 63 - __builtin_clzll(v); // position of the most significant bit
