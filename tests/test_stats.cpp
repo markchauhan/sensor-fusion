@@ -1,5 +1,6 @@
 #include "sf/stats.hpp"
 #include "sf/feature_engine.hpp"
+#include "sf/pipeline.hpp"
 
 #include <cmath>
 #include <cstdio>
