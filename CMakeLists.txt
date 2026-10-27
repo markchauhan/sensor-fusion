@@ -14,6 +14,7 @@ find_package(Threads REQUIRED)
 add_library(sf STATIC
   src/sim_source.cpp
   src/pipeline.cpp
+  src/recording.cpp
 )
 target_include_directories(sf PUBLIC include)
 target_compile_options(sf PUBLIC -Wall -Wextra -Wpedantic)
@@ -43,3 +44,11 @@ add_test(NAME stats COMMAND test_stats)
 add_executable(test_pipeline tests/test_pipeline.cpp)
 target_link_libraries(test_pipeline PRIVATE sf)
 add_test(NAME pipeline COMMAND test_pipeline)
+
+add_executable(test_recording tests/test_recording.cpp)
+target_link_libraries(test_recording PRIVATE sf)
+add_test(NAME recording COMMAND test_recording)
+
+add_executable(bench apps/bench.cpp)
+target_link_libraries(bench PRIVATE sf)
+add_test(NAME bench_smoke COMMAND bench --rate 1000 --seconds 0.2)
