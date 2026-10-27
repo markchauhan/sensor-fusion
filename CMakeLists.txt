@@ -34,3 +34,7 @@ add_test(NAME latency_histogram COMMAND test_latency_histogram)
 add_executable(test_sim_source tests/test_sim_source.cpp)
 target_link_libraries(test_sim_source PRIVATE sf)
 add_test(NAME sim_source COMMAND test_sim_source)
+
+add_executable(test_stats tests/test_stats.cpp)
+target_link_libraries(test_stats PRIVATE sf)
+add_test(NAME stats COMMAND test_stats)
