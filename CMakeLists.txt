@@ -13,6 +13,7 @@ find_package(Threads REQUIRED)
 
 add_library(sf STATIC
   src/sim_source.cpp
+  src/pipeline.cpp
 )
 target_include_directories(sf PUBLIC include)
 target_compile_options(sf PUBLIC -Wall -Wextra -Wpedantic)
@@ -38,3 +39,7 @@ add_test(NAME sim_source COMMAND test_sim_source)
 add_executable(test_stats tests/test_stats.cpp)
 target_link_libraries(test_stats PRIVATE sf)
 add_test(NAME stats COMMAND test_stats)
+
+add_executable(test_pipeline tests/test_pipeline.cpp)
+target_link_libraries(test_pipeline PRIVATE sf)
+add_test(NAME pipeline COMMAND test_pipeline)
